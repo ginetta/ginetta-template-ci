@@ -19,5 +19,5 @@ sao @ginetta/template-ci my-project
 ### From git
 
 ```bash
-sao ginetta/ginetta-template-ci my-project
+sao ginetta/ginetta-template-ci --clone my-project
 ```
