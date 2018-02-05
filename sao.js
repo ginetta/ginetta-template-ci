@@ -2,11 +2,11 @@ module.exports = {
   prompts: {
     client: {
       message: 'What is the client of this project?',
-      default: ':ginetta:'
+      default: 'Ginetta'
     },
     project: {
       message: 'What is the project name',
-      default: ':website:'
+      default: 'Portfolio'
     },
     hostLive: {
       type: 'confirm',
@@ -16,7 +16,7 @@ module.exports = {
     liveURL: {
       type: 'input',
       message: 'Do you want to host it\'s live/production instance?',
-      default: ':http://project.client.net/:',
+      default: 'http://project.client.net',
       when({hostLive}) {
         return hostLive
       }
