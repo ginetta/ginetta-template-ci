@@ -1,6 +1,6 @@
 {
   "name": "@ginetta/template-ci",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "The ginetta CI template",
   "repository": {
     "url": "ginetta/ginetta-template-ci",
@@ -8,7 +8,8 @@
   },
   "keywords": [
     "ginetta",
-    "ci"
+    "ci",
+    "boilerplate"
   ],
   "author": "lejoe <ciao@lejoe.com> (github.com/lejoe)",
   "files": [
@@ -19,9 +20,8 @@
     "test": "ava",
     "test:dev": "ava -w"
   },
-  "dependencies": {},
   "devDependencies": {
-    "ava": "^0.21.0",
-    "sao": "^0.22.1"
+    "ava": "^0.25.0",
+    "sao": "^0.22.12"
   }
 }
