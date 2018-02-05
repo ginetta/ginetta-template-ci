@@ -15,7 +15,7 @@ module.exports = {
     },
     liveURL: {
       type: 'input',
-      message: 'Do you want to host it\'s live/production instance?',
+      message: 'What will the live url be?',
       default: 'http://project.client.net',
       when({hostLive}) {
         return hostLive
