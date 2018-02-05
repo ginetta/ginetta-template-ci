@@ -1,0 +1,27 @@
+{
+  "name": "@ginetta/template-ci",
+  "version": "0.0.0",
+  "description": "The ginetta CI template",
+  "repository": {
+    "url": "ginetta/ginetta-template-ci",
+    "type": "git"
+  },
+  "keywords": [
+    "ginetta",
+    "ci"
+  ],
+  "author": "lejoe <ciao@lejoe.com> (github.com/lejoe)",
+  "files": [
+    "sao.js",
+    "template"
+  ],
+  "scripts": {
+    "test": "ava",
+    "test:dev": "ava -w"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "sao": "^0.22.1"
+  }
+}
