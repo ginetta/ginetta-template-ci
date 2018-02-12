@@ -17,8 +17,6 @@ default_setup: &default_setup
 version: 2
 
 jobs:
-  # I think we should enforce a tests job, even if an app does not declare any
-  # to be discussed
 
   # Build the app
   build:
@@ -54,7 +52,7 @@ jobs:
       #    command: npm run test:units
 
       - run:
-          name: Build Skeleton
+          name: Build
           command: npm run build
 
       - persist_to_workspace:
