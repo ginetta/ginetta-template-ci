@@ -7,7 +7,7 @@ default_setup: &default_setup
     - P_CLIENT_NAME: "<%= client.toLowerCase() %>"
     - P_PROJECT_NAME: "<%= project.toLowerCase() %>"
   docker:
-    - image: circleci/node:8.9
+    - image: circleci/node:carbon
   working_directory: /tmp/ginetta-ci
 
 #
