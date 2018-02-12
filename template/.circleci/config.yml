@@ -1,19 +1,14 @@
 #
 # Generic references
 #
-default_box: &default_box
-  docker:
-    - image: circleci/node:8.9
 
-global_env: &global_env
+default_setup: &default_setup
   environment:
     - P_CLIENT_NAME: "<%= client.toLowerCase() %>"
     - P_PROJECT_NAME: "<%= project.toLowerCase() %>"
     <% if (!hostLive) { %>#<% } %>- P_LIVE_URL: "<%= liveURL %>"
-
-default_setup: &default_setup
-  <<: *default_box
-  <<: *global_env
+  docker:
+    - image: circleci/node:8.9
   working_directory: /tmp/ginetta-ci
 
 #
@@ -22,8 +17,6 @@ default_setup: &default_setup
 version: 2
 
 jobs:
-  # I think we should enforce a tests job, even if an app does not declare any
-  # to be discussed
 
   # Build the app
   build:
@@ -49,8 +42,17 @@ jobs:
           name: Install dependencies
           command: npm install
 
+      # Use these depending of your needs
+      #- run:
+      #    name: Lint check
+      #    command: npm run test:lint
+
+      #- run:
+      #    name: Unit tests
+      #    command: npm run test:units
+
       - run:
-          name: Build Skeleton
+          name: Build
           command: npm run build
 
       - persist_to_workspace:
@@ -64,7 +66,7 @@ jobs:
             - ./node_modules
           key: modules-cache-{{ checksum "package-lock.json" }}
 
-  deploy_staging:
+  deploy:
     <<: *default_setup
 
     steps:
@@ -82,72 +84,37 @@ jobs:
       - deploy:
           name: Deploy on Staging
           command: |
-            # TODO should not the ABSOLUTE_DIRECTORY be directly an environment variable?
+            # Get Staging or Deployment informations depending of the branch
+            if [ "$CIRCLE_BRANCH" == "release" ]; then
+              HOST=$G_NINE_LIVE_HOST
+              USER=$G_NINE_LIVE_USER
+              HOMEPATH=$G_NINE_LIVE_HOMEPATH
+            else
+              HOST=$G_NINE_STAGING_HOST
+              USER=$G_NINE_STAGING_USER
+              HOMEPATH=$G_NINE_STAGING_HOMEPATH
+            fi
+
             # Get the directory used server-side
             DIRECTORY="$P_CLIENT_NAME.ginetta.net/$P_PROJECT_NAME"
             [[ $P_CLIENT_NAME == ginetta ]] && DIRECTORY="preview.ginetta.net/$P_PROJECT_NAME"
 
-            # Get the absolute directory
-            ABSOLUTE_DIRECTORY="$G_NINE_STAGING_HOMEPATH/$DIRECTORY/branch-circle/$CIRCLE_BRANCH/"
+            # And get its absolute directory
+            ABSOLUTE_DIRECTORY="$HOMEPATH/$DIRECTORY/branch-circle/$CIRCLE_BRANCH/"
 
             bash $CIRCLE_WORKING_DIRECTORY/.circleci/deploy-rsync.sh \
               -b $CIRCLE_BRANCH \
               -s $CIRCLE_WORKING_DIRECTORY/build/ \
-              -h $G_NINE_STAGING_HOST \
-              -u $G_NINE_STAGING_USER \
-              -d $ABSOLUTE_DIRECTORY
-
-  # There is probably a way to have this less redundant
-  deploy_prod:
-    <<: *default_setup
-
-    steps:
-      - run:
-          name: Install deploy tools
-          command: sudo apt install -y rsync
-
-      - attach_workspace:
-          at: /tmp/ginetta-ci
-
-      - deploy:
-          name: Deploy on Production
-          command: |
-            # TODO should not the ABSOLUTE_DIRECTORY be directly an environment variable?
-            # Get the directory used server-side
-            DIRECTORY="$P_CLIENT_NAME.ginetta.net/$P_PROJECT_NAME"
-            [[ $P_CLIENT_NAME == ginetta ]] && DIRECTORY="preview.ginetta.net/$P_PROJECT_NAME"
-
-            # Get the absolute directory
-            ABSOLUTE_DIRECTORY="$G_NINE_STALIVE_HOMEPATH/$DIRECTORY/branch-circle/$CIRCLE_BRANCH/"
-
-            bash $CIRCLE_WORKING_DIRECTORY/.circleci/deploy-rsync.sh \
-              -b $CIRCLE_BRANCH \
-              -s $CIRCLE_WORKING_DIRECTORY/build/ \
-              -h $G_LIVE_STAGING_HOST \
-              -u $G_LIVE_STAGING_USER \
+              -h $HOST \
+              -u $USER \
               -d $ABSOLUTE_DIRECTORY
 
 workflows:
   version: 2
-  # Build the app,
-  # If the branch is release, deploy live on ginetta.net
-  # else deploy on staging, with a custom URL for each branch
   pipeline:
     jobs:
       - build
-      - deploy_staging:
-          filters:
-            branches:
-              # Can we move that to an env variable?
-              ignore: release
-          context: org-global
-          requires:
-            - build
-      - deploy_prod:
-          filters:
-            branches:
-              # Can we move that to an env variable?
-              only: release
+      - deploy:
           context: org-global
           requires:
             - build
