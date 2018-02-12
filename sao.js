@@ -2,11 +2,9 @@ module.exports = (options) => {
   const prompts = {
     client: {
       message: 'What is the client of this project?',
-      default: 'Ginetta'
     },
     project: {
       message: 'What is the project name',
-      default: 'Portfolio'
     },
   };
 
