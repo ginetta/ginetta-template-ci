@@ -6,7 +6,7 @@ default_setup: &default_setup
   environment:
     - P_CLIENT_NAME: "<%= client.toLowerCase() %>"
     - P_PROJECT_NAME: "<%= project.toLowerCase() %>"
-    <% if (!hostLive) { %>#<% } %>- P_LIVE_URL: "<%= liveURL %>"
+    <% if (!hostLive) { %>#<% } %>- P_LIVE_URL: "<%= liveUrl %>"
   docker:
     - image: circleci/node:8.9
   working_directory: /tmp/ginetta-ci

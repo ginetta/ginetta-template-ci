@@ -51,7 +51,7 @@ test(`Stores the live URL info`, t =>
       client: `Ginetta`,
       project: `Website`,
       hostLive: true,
-      liveURL: `http://www.ginetta.net`
+      liveUrl: `http://www.ginetta.net`
     })
     .then(res => {
       const content = res.files['.circleci/config.yml'].contents.toString()
