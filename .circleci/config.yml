@@ -1,0 +1,69 @@
+#
+# Generic references
+#
+
+default_setup: &default_setup
+  docker:
+    - image: circleci/node:carbon
+  working_directory: /tmp/ginetta-ci
+
+#
+# CircleCI jobs and pipelines
+#
+version: 2
+
+jobs:
+
+  # test the code
+  test:
+    <<: *default_setup
+
+    steps:
+      - checkout
+
+      - run:
+          name: Display node and npm informations
+          command: |
+            echo "node version $(node -v) running"
+            echo "npm version $(npm -v) running"
+
+      # Restore dependencies cache
+      - restore_cache:
+          keys:
+            - modules-cache-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - modules-cache
+
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      # Use these depending of your needs
+      #- run:
+      #    name: Lint check
+      #    command: npm run test:lint
+
+      - run:
+         name: Unit tests
+         command: npm run test
+
+      # - run:
+      #     name: Build
+      #     command: npm run build
+
+      # - persist_to_workspace:
+      #     root: /tmp/ginetta-ci
+      #     paths:
+      #       - build/*
+      #       - .circleci/*
+
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: modules-cache-{{ checksum "package-lock.json" }}
+
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - test
