@@ -36,7 +36,9 @@ jobs:
 
       - run:
           name: Install dependencies
-          command: npm install
+          command: |
+            npm install
+            mkdir ~/reports
 
       # Use these depending of your needs
       #- run:
