@@ -4,7 +4,9 @@
 
 ## Prerequisites
 
-Install [SAO](https://github.com/egoist/sao) first.
+The best way to use this, is through the [Ginetta CLI](https://github.com/ginetta/ginetta-cli).
+
+Alternatively, could install [SAO](https://github.com/egoist/sao).
 
 ```bash
 npm i -g sao
