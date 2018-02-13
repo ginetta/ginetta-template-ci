@@ -50,8 +50,19 @@ jobs:
           command: npm run -s test -- --tap | npx tap-xunit > ~/reports/ava.xml
           when: always
       
+      - run:
+          name: Report test coverage
+          command: |
+            npx nyc report --reporter=text-lcov > ~/reports/coverage/coverage.lcov
+          when: always
+
+
       - store_test_results:
           path: ~/reports
+          when: always
+      
+      - store_artifacts:
+          path: ~/reports/coverage
           when: always
       
 

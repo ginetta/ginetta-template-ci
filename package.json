@@ -17,11 +17,12 @@
     "template"
   ],
   "scripts": {
-    "test": "ava",
+    "test": "nyc ava",
     "test:dev": "ava -w"
   },
   "devDependencies": {
     "ava": "^0.25.0",
+    "nyc": "^11.4.1",
     "sao": "^0.22.12",
     "tap-xunit": "^2.2.0"
   },
