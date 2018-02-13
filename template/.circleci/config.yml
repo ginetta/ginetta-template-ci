@@ -87,26 +87,28 @@ jobs:
             if [ "$CIRCLE_BRANCH" == "release" ]; then
               HOST=$G_NINE_LIVE_HOST
               USER=$G_NINE_LIVE_USER
-              HOMEPATH=$G_NINE_LIVE_HOMEPATH
+              if [ "$P_CLIENT_NAME" == "ginetta" ]; then
+                ABSOLUTE_DIRECTORY="$G_NINE_LIVE_HOMEPATH/$P_PROJECT_NAME.ginetta.net/"
+              else
+                # Configure the production server path here
+                # ABSOLUTE_DIRECTORY=
+                echo "You should configure the deployement path in your CI config"
+                exit 1
+              fi
             else
               HOST=$G_NINE_STAGING_HOST
               USER=$G_NINE_STAGING_USER
-              HOMEPATH=$G_NINE_STAGING_HOMEPATH
+              DIRECTORY="$P_CLIENT_NAME.ginetta.net"
+              [[ $P_CLIENT_NAME == "ginetta" ]] && DIRECTORY="preview.ginetta.net"
+              ABSOLUTE_DIRECTORY="$G_NINE_STAGING_HOMEPATH/$DIRECTORY/$P_PROJECT_NAME/branch/$CIRCLE_BRANCH/"
             fi
 
-            # Get the directory used server-side
-            DIRECTORY="$P_CLIENT_NAME.ginetta.net/$P_PROJECT_NAME"
-            [[ $P_CLIENT_NAME == ginetta ]] && DIRECTORY="preview.ginetta.net/$P_PROJECT_NAME"
-
-            # And get its absolute directory
-            ABSOLUTE_DIRECTORY="$HOMEPATH/$DIRECTORY/branch-circle/$CIRCLE_BRANCH/"
-
-            bash $CIRCLE_WORKING_DIRECTORY/.circleci/deploy-rsync.sh \
-              -b $CIRCLE_BRANCH \
-              -s $CIRCLE_WORKING_DIRECTORY/build/ \
-              -h $HOST \
-              -u $USER \
-              -d $ABSOLUTE_DIRECTORY
+            bash "$CIRCLE_WORKING_DIRECTORY"/.circleci/deploy-rsync.sh \
+              -b "$CIRCLE_BRANCH" \
+              -s "$CIRCLE_WORKING_DIRECTORY"/build/ \
+              -h "$HOST" \
+              -u "$USER" \
+              -d "$ABSOLUTE_DIRECTORY"
 
 workflows:
   version: 2
