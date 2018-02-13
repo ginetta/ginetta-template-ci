@@ -2,7 +2,7 @@
 
 > Ginetta CI template
 
-## Usage
+## Prerequisites
 
 Install [SAO](https://github.com/egoist/sao) first.
 
@@ -10,14 +10,10 @@ Install [SAO](https://github.com/egoist/sao) first.
 npm i -g sao
 ```
 
-<!-- ### From npm
+## Usage
 
 ```bash
-sao @ginetta/template-ci my-project
-``` -->
-
-### From git
-
-```bash
-sao ginetta/ginetta-template-ci --clone my-project
+sao ginetta/ginetta-template-ci --clone -u my-project-folder
 ```
+
+(Currently not working because of https://github.com/saojs/sao/issues/77)
