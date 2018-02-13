@@ -18,10 +18,14 @@
   ],
   "scripts": {
     "test": "ava",
+    "test:ci": "ava --tap | tap-xunit > ~/reports/ava.xml",
     "test:dev": "ava -w"
   },
   "devDependencies": {
     "ava": "^0.25.0",
     "sao": "^0.22.12"
+  },
+  "dependencies": {
+    "tap-xunit": "^2.2.0"
   }
 }
