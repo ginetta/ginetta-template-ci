@@ -17,7 +17,7 @@ test(`Circleci has project infos`, t =>
       const projectLine = content.match(/.*P_PROJECT_NAME:.*/g)[0]
 
       t.is(clientLine.indexOf('#-'), -1)
-      t.not(clientLine.indexOf(`ginetta`), -1)
+      t.not(clientLine.indexOf(` ginetta `), -1)
 
       t.is(projectLine.indexOf('#-'), -1)
       t.not(projectLine.indexOf(`website`), -1)
@@ -34,6 +34,6 @@ test(`Stores info to lower case`, t =>
       const clientLine = content.match(/.*P_CLIENT_NAME:.*/g)[0]
       const projectLine = content.match(/.*P_PROJECT_NAME:.*/g)[0]
 
-      t.not(clientLine.indexOf(`ginetta`), -1)
+      t.not(clientLine.indexOf(` ginetta`), -1)
       t.not(projectLine.indexOf(`website`), -1)
     }))
