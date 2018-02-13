@@ -45,7 +45,7 @@ jobs:
 
       - run:
          name: Unit tests
-         command: npm run test:ci
+         command: npm run -s test -- --tap | npx tap-xunit > ~/reports/ava.xml
       
       - store_test_results:
           path: $CIRCLE_WORKING_DIRECTORY/reports
