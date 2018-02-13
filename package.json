@@ -22,9 +22,8 @@
   },
   "devDependencies": {
     "ava": "^0.25.0",
-    "sao": "^0.22.12"
-  },
-  "dependencies": {
+    "sao": "^0.22.12",
     "tap-xunit": "^2.2.0"
-  }
+  },
+  "dependencies": {}
 }
