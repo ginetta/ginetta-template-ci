@@ -38,7 +38,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-            mkdir ~/reports
+            mkdir -p ~/reports/coverage
 
       # Use these depending of your needs
       #- run:
